@@ -1,36 +1,28 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+API ROUTES
 
-## Getting Started
+POST /auth/login     - this route is used to login a user which return a jwt token
+POST /auth/register  - this route is used to register a new user but currently it is commented out
 
-First, run the development server:
+(open routes)
+GET      /api/list  - this route return a list of all the movies, series and animie
+(auth protected routes)
+POST     /api/list  - this route is used to create a new list item
+PUT      /api/list  - this route is used to update a list item
+DELETE   /api/list  - this route is used to delete a list item
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Tech Stack used - 
+MongoDB - for database
+NextJS - for frontend and backend
+Tailwind CSS - for styling
+Vercel - for deployment
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+NPM packages used -
+bcryptjs      -    for hashing passwords
+datatables    -    to implement responsive and interactive tables
+cookie        -    to store and get cookies
+jsonwebtoken  -    to make and verify jwt tokens
+mongoose      -    for mongodb connection and quering
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+.env file 
+MONGODB_URI= enter your mongodb uri
+JWT_SECRET= enter a secret key to be used by the JWT
