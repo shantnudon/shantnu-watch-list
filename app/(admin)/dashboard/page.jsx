@@ -305,8 +305,8 @@ export default function AdminDashboard() {
 function AddEditModal({ closeModal, savePost, post }) {
   const [formData, setFormData] = useState({
     title: post?.title || "",
-    type: post?.type || "movie", // Default to 'movie'
-    status: post?.status || "watched", // Default to 'watched'
+    type: post?.type || "movie", 
+    status: post?.status || "watched", 
     remarks: post?.remarks || "",
   });
 

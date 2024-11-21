@@ -30,11 +30,9 @@ export default function LoginPage() {
         return;
       }
 
-      // Store the token in a cookie using js-cookie
-      Cookies.set("token", data.token, { expires: 1 }); // expires in 1 day
+      Cookies.set("token", data.token, { expires: 1 }); 
 
-      // Redirect or handle successful login
-      window.location.href = "/dashboard"; // Redirect to the dashboard
+      window.location.href = "/dashboard"; 
     } catch (error) {
       setError("Failed to login. Please try again.");
     } finally {

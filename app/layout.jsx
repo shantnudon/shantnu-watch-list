@@ -1,5 +1,4 @@
 import "./globals.css";
-// import "datatables.net-dt/css/jquery.dataTables.css";
 
 export const metadata = {
   title: "Shantnu Watch List",
