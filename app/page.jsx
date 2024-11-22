@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import "datatables.net-dt/css/dataTables.dataTables.css";
 import Link from "next/link";
 import dynamic from "next/dynamic";
+import $ from "jquery";
 
 const DataTable = dynamic(() => import("datatables.net"), { ssr: false });
 
@@ -74,6 +75,7 @@ export default function HomePage() {
     }
   }, [posts]);
 
+  // console.log(posts);
   return (
     <div className="container mx-auto py-6">
       <h1 className="text-4xl font-semibold mb-6 text-center">
@@ -153,23 +155,42 @@ export default function HomePage() {
         <table id="contentTable" className="min-w-full bg-white table-auto">
           <thead className="bg-blue-500 text-white">
             <tr>
+              {/* <th className="py-3 px-6 text-left">SNo</th> */}
               <th className="py-3 px-6 text-left">Title</th>
               <th className="py-3 px-6 text-left">Type</th>
               <th className="py-3 px-6 text-left">Status</th>
+              <th className="py-3 px-6 text-left">Year</th>
+              <th className="py-3 px-6 text-left">Genre</th>
+              <th className="py-3 px-6 text-left">Runtime</th>
+              <th className="py-3 px-6 text-left">Plot</th>
+              <th className="py-3 px-6 text-left">Poster</th>
+              <th className="py-3 px-6 text-left">IMDB ID</th>
               <th className="py-3 px-6 text-left">Remarks</th>
             </tr>
           </thead>
           <tbody>
             {posts.map((post) => (
-              <tr
-                key={post._id}
-                className="bg-gray-100 border-b hover:bg-gray-200"
-              >
-                <td className="py-3 px-6">{post.title.toUpperCase()}</td>
-                <td className="py-3 px-6">{post.type.toUpperCase()}</td>
-                <td className="py-3 px-6">{post.status.toUpperCase()}</td>
-                <td className="py-3 px-6">{post.remarks}</td>
-              </tr>
+              <>
+                {/* {console.log(post)} */}
+                <tr
+                  key={post._id}
+                  className="bg-gray-100 border-b hover:bg-gray-200"
+                >
+                  {/* <td>{index + 1}</td> */}
+                  <td className="py-3 px-6">{post.title}</td>
+                  <td className="py-3 px-6">{post.type}</td>
+                  <td className="py-3 px-6">{post.status}</td>
+                  <td className="py-3 px-6">{post.data.Year}</td>
+                  <td className="py-3 px-6">{post.data.Genre}</td>
+                  <td className="py-3 px-6">{post.data.Runtime}</td>
+                  <td className="py-3 px-6">{post.data.Plot}</td>
+                  <td className="py-3 px-6">
+                    <img src={post.data.Poster} alt={post.title} />
+                  </td>
+                  <td className="py-3 px-6">{post.imdbId}</td>
+                  <td className="py-3 px-6">{post.remarks}</td>
+                </tr>
+              </>
             ))}
           </tbody>
         </table>

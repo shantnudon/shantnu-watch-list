@@ -5,6 +5,7 @@ import { verifyToken } from "../../../lib/middleware/authMiddleware";
 let postsCache = null;
 let cacheTimestamp = null;
 const CACHE_EXPIRATION_TIME = 86400000; // 24 hours in milliseconds
+// const CACHE_EXPIRATION_TIME = 1; // 24 hours in milliseconds
 
 // cached get route that will revalidate after 24 hours to save on db calls
 export async function GET() {
@@ -48,11 +49,37 @@ export async function POST(request) {
   if (!user) {
     return Response.json({ message: "Unauthorized" }, { status: 401 });
   }
+
   try {
-    const data = await request.json();
-    const newPost = await Post.create(data);
+    const { title, type, status, imdbId, remarks } = await request.json();
+
+    const myHeaders = new Headers();
+    myHeaders.append("x-rapidapi-host", process.env.RAPIDAPI_HOST);
+    myHeaders.append("x-rapidapi-key", process.env.RAPIDAPI_KEY);
+
+    const requestOptions = {
+      method: "GET",
+      headers: myHeaders,
+      redirect: "follow",
+    };
+
+    const externalResponse = await fetch(
+      `${process.env.RAPIDAPI_URL}${imdbId}`,
+      requestOptions
+    );
+    const result = await externalResponse.json();
+    // return new Response(JSON.stringify(result), { status: 200 });
+    const newPost = await Post.create({
+      title,
+      type,
+      status,
+      imdbId,
+      data: result,
+      remarks,
+    });
     return Response.json(newPost, { status: 201 });
   } catch (error) {
+    console.log(error);
     return Response.json({ message: "Failed to create post" }, { status: 500 });
   }
 }
