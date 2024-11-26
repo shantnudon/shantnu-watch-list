@@ -257,7 +257,11 @@ function AddEditModal({ closeModal, savePost, post }) {
               required
             />
           </div>
-
+          <div className="text-blue-500">
+            <a href={`https://www.imdb.com/find/?q=${formData.title}`}>
+              Check the IMDB details here
+            </a>
+          </div>
           <div className="mb-4">
             <label className="block text-sm font-medium mb-2">IMDB ID</label>
             <input
