@@ -258,7 +258,7 @@ function AddEditModal({ closeModal, savePost, post }) {
             />
           </div>
           <div className="text-blue-500">
-            <a href={`https://www.imdb.com/find/?q=${formData.title}`}>
+            <a href={`https://www.imdb.com/find/?q=${formData.title}`} target="_blank">
               Check the IMDB details here
             </a>
           </div>
@@ -266,7 +266,7 @@ function AddEditModal({ closeModal, savePost, post }) {
             <label className="block text-sm font-medium mb-2">IMDB ID</label>
             <input
               type="text"
-              name="title"
+              name="imdbId"
               value={formData.imdbId}
               onChange={handleChange}
               className="w-full px-3 py-2 border rounded-md"
@@ -275,7 +275,7 @@ function AddEditModal({ closeModal, savePost, post }) {
           </div>
           <input
             type="hidden"
-            name="title"
+            name="data"
             value={formData.data}
             onChange={handleChange}
             className="w-full px-3 py-2 border rounded-md"
