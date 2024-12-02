@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
-import os from "os";
+import jwt from "jsonwebtoken";
 
 export default function AdminDashboard() {
   const router = useRouter();
@@ -51,6 +51,12 @@ export default function AdminDashboard() {
     const token = Cookies.get("token");
 
     if (!token) {
+      router.push("/");
+    }
+
+    const decodeToken = jwt.verify(token, process.env.JWT_SECRET);
+
+    if (decodeToken.role !== "admin") {
       router.push("/");
     }
   }, []);
