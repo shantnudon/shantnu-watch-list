@@ -9,6 +9,7 @@ export async function POST(request) {
 
   try {
     const user = await User.findOne({ email });
+    // console.log(user);
     if (!user) {
       return Response.json({ message: "User not found" }, { status: 404 });
     }
@@ -17,9 +18,11 @@ export async function POST(request) {
     if (!isValidPassword) {
       return Response.json({ message: "Invalid credentials" }, { status: 401 });
     }
+    // console.log(user.type);
+    // console.log(user.email);
 
     const token = jwt.sign(
-      { userId: user._id, email: user.email },
+      { type: user._id, email: user.email },
       process.env.JWT_SECRET,
       { expiresIn: "24h" }
     );

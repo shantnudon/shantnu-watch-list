@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
-import jwt from "jsonwebtoken";
+import jwt, { decode } from "jsonwebtoken";
 
 export default function AdminDashboard() {
   const router = useRouter();
@@ -24,19 +24,6 @@ export default function AdminDashboard() {
     router.push("/");
   };
 
-  // const systemStats = {
-  //   uptime: os.uptime(),
-  //   totalMemory: os.totalmem(),
-  //   freeMemory: os.freemem(),
-  //   loadAverage: os.loadavg(),
-  //   cpus: os.cpus(),
-  //   networkInterfaces: os.networkInterfaces(),
-  //   platform: os.platform(),
-  //   release: os.release(),
-  //   hostname: os.hostname(),
-  //   arch: os.arch(),
-  // };
-
   const fetchPosts = async () => {
     try {
       const res = await fetch("/api/list");
@@ -48,18 +35,34 @@ export default function AdminDashboard() {
   };
 
   useEffect(() => {
-    const token = Cookies.get("token");
+    const verifyToken = async () => {
+      const token = Cookies.get("token");
 
-    if (!token) {
-      router.push("/");
-    }
+      if (!token) {
+        router.push("/");
+        return;
+      }
 
-    const decodeToken = jwt.verify(token, process.env.JWT_SECRET);
+      try {
+        const res = await fetch("/api/verify-token", {
+          method: "POST",
+          body: JSON.stringify({ token }),
+        });
 
-    if (decodeToken.role !== "admin") {
-      router.push("/");
-    }
-  }, []);
+        if (res.status === 200) {
+          const data = await res.json();
+          console.log("Decoded User: ", data.user);
+        } else {
+          router.push("/login");
+        }
+      } catch (error) {
+        console.error("Token verification failed", error);
+        router.push("/login");
+      }
+    };
+
+    verifyToken();
+  }, [router]);
 
   useEffect(() => {
     fetchPosts();
@@ -264,7 +267,10 @@ function AddEditModal({ closeModal, savePost, post }) {
             />
           </div>
           <div className="text-blue-500">
-            <a href={`https://www.imdb.com/find/?q=${formData.title}`} target="_blank">
+            <a
+              href={`https://www.imdb.com/find/?q=${formData.title}`}
+              target="_blank"
+            >
               Check the IMDB details here
             </a>
           </div>
