@@ -98,9 +98,9 @@ export async function PUT(request) {
       new: true,
     });
 
-    return Response.json(updatedPost);
+    return Response.json({ message: "Update success" }, { status: 200 });
   } catch (error) {
-    return Response.json({ message: "Failed to update post" }, { status: 500 });
+    return Response.json({ message: "Failed to update" }, { status: 500 });
   }
 }
 
@@ -115,8 +115,8 @@ export async function DELETE(request) {
     const { _id } = data;
 
     await Post.findByIdAndDelete(_id);
-    return Response.json({ message: "Post deleted successfully" });
+    return Response.json({ message: "Deleted successfully" }, { status: 200 });
   } catch (error) {
-    return Response.json({ message: "Failed to delete post" }, { status: 500 });
+    return Response.json({ message: "Failed to delete" }, { status: 500 });
   }
 }

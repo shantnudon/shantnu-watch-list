@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
-import jwt, { decode } from "jsonwebtoken";
+import Swal from "sweetalert2";
 
 export default function AdminDashboard() {
   const router = useRouter();
@@ -12,6 +12,7 @@ export default function AdminDashboard() {
   const [showEditModal, setShowEditModal] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedPost, setSelectedPost] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const authToken = Cookies.get("token");
 
@@ -25,9 +26,11 @@ export default function AdminDashboard() {
   };
 
   const fetchPosts = async () => {
+    setIsLoading(true);
     try {
       const res = await fetch("/api/list");
       const data = await res.json();
+      setIsLoading(false);
       setPosts(data);
     } catch (error) {
       console.error("Failed to fetch posts", error);
@@ -70,6 +73,7 @@ export default function AdminDashboard() {
 
   // Add Post function
   const handleAddPost = async (newPost) => {
+    setIsLoading(true);
     try {
       const myHeaders = new Headers();
       myHeaders.append("Content-Type", "application/json");
@@ -81,17 +85,22 @@ export default function AdminDashboard() {
         body: JSON.stringify(newPost),
       });
 
-      if (res.ok) {
+      if (res.status === 201) {
+        Swal.fire("Success", "Added successfully", "success");
         fetchPosts();
         setShowAddModal(false);
       }
     } catch (error) {
       console.error("Failed to add post", error);
+      Swal.fire("Failed", "Ooopsieeeeee", "error");
+    } finally {
+      setIsLoading(false);
     }
   };
 
   // Update Post function
   const handleUpdatePost = async (updatedPost) => {
+    setIsLoading(true);
     try {
       const myHeaders = new Headers();
       myHeaders.append("Content-Type", "application/json");
@@ -103,17 +112,22 @@ export default function AdminDashboard() {
         body: JSON.stringify(updatedPost),
       });
 
-      if (res.ok) {
+      if (res.status === 200) {
         fetchPosts();
         setShowEditModal(false);
+        Swal.fire("Success", "Updated successfully", "success");
       }
     } catch (error) {
       console.error("Failed to update post", error);
+      Swal.fire("Failed", "Ooopsieeeeee", "error");
+    } finally {
+      setIsLoading(false);
     }
   };
 
   // Delete Post function
   const handleDeletePost = async (id) => {
+    setIsLoading(true);
     try {
       const myHeaders = new Headers();
       myHeaders.append("Content-Type", "application/json");
@@ -126,11 +140,14 @@ export default function AdminDashboard() {
       });
       // console.log(res);
 
-      if (res.ok) {
-        fetchPosts();
+      if (res.status === 200) {
+        Swal.fire("Success", "Deleted successfully", "success");
       }
     } catch (error) {
       console.error("Failed to delete post", error);
+      Swal.fire("Failed", "Ooopsieeeeee", "error");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -219,6 +236,12 @@ export default function AdminDashboard() {
           savePost={handleUpdatePost}
           post={selectedPost}
         />
+      )}
+
+      {isLoading && (
+        <div className="absolute inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+          <div className="text-white text-xl">Loading...</div>
+        </div>
       )}
     </div>
   );
