@@ -90,6 +90,9 @@ export default function AdminDashboard() {
         fetchPosts();
         setShowAddModal(false);
       }
+      if (res.status === 409) {
+        Swal.fire("Failed", "Duplicate entry detected", "error");
+      }
     } catch (error) {
       console.error("Failed to add post", error);
       Swal.fire("Failed", "Ooopsieeeeee", "error");
