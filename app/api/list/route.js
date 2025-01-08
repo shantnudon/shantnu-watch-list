@@ -53,6 +53,11 @@ export async function POST(request) {
   try {
     const { title, type, status, imdbId, remarks } = await request.json();
 
+    const existingPost = await Post.findOne({ imdbId });
+    if (existingPost) {
+      return Response.json({ message: "Duplicate entry" }, { status: 409 });
+    }
+
     const myHeaders = new Headers();
     myHeaders.append("x-rapidapi-host", process.env.RAPIDAPI_HOST);
     myHeaders.append("x-rapidapi-key", process.env.RAPIDAPI_KEY);
