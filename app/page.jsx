@@ -149,7 +149,7 @@ export default function HomePage() {
         </div>
       </div> */}
       <div className="absolute">
-        <div className="sticky top-20 m-0 p-0 z-10 ">
+        <div className="fixed top-2 left-0 m-0 p-0 z-10 ">
           <div className="flex">
             <button className={``} onClick={toggleTheme}>
               {theme === "light" ? (
