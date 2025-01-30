@@ -356,7 +356,7 @@ function AddEditModal({ closeModal, savePost, post }) {
               value={formData.remarks}
               onChange={handleChange}
               className="w-full px-3 py-2 border rounded-md"
-              required
+              
             />
           </div>
 
